@@ -4,6 +4,11 @@ import userEvent from '@testing-library/user-event';
 import { DirectoryBrowser } from './DirectoryBrowser';
 
 describe('DirectoryBrowser', () => {
+  const defaultThumbnailProps = {
+    thumbnails: new Map<string, string>(),
+    thumbnailsLoading: false,
+  };
+
   it('renders nothing when not supported', () => {
     const { container } = render(
       <DirectoryBrowser
@@ -11,6 +16,7 @@ describe('DirectoryBrowser', () => {
         isSupported={false}
         onOpenDirectory={vi.fn()}
         onSelectFile={vi.fn()}
+        {...defaultThumbnailProps}
       />
     );
     expect(container.firstChild).toBeNull();
@@ -23,6 +29,7 @@ describe('DirectoryBrowser', () => {
         isSupported={true}
         onOpenDirectory={vi.fn()}
         onSelectFile={vi.fn()}
+        {...defaultThumbnailProps}
       />
     );
     expect(screen.getByText('Open Folder')).toBeInTheDocument();
@@ -39,6 +46,7 @@ describe('DirectoryBrowser', () => {
         isSupported={true}
         onOpenDirectory={vi.fn()}
         onSelectFile={vi.fn()}
+        {...defaultThumbnailProps}
       />
     );
     expect(screen.getByText('manga1.zip')).toBeInTheDocument();
@@ -54,6 +62,7 @@ describe('DirectoryBrowser', () => {
         isSupported={true}
         onOpenDirectory={vi.fn()}
         onSelectFile={onSelectFile}
+        {...defaultThumbnailProps}
       />
     );
     await userEvent.click(screen.getByText('manga1.zip'));

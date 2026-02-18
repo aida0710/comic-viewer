@@ -176,19 +176,25 @@ export default function App() {
           <ThemeToggle theme={settings.theme} onToggle={toggleTheme} />
         </div>
 
-        {/* メインコンテンツ：中央配置 */}
-        <div className="flex-1 flex flex-col items-center justify-center px-4 pb-16">
-          <h1 className="text-4xl font-bold mb-2 tracking-tight">Comic Viewer</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-10">
-            Drop a ZIP to start reading
-          </p>
-          <DropZone onFileSelect={handleFileSelect} loadingState={loadingState} />
-          <DirectoryBrowser
-            zipFiles={fsAccess.zipFiles}
-            isSupported={fsAccess.isSupported}
-            onOpenDirectory={fsAccess.openDirectory}
-            onSelectFile={handleDirFileSelect}
-          />
+        {/* メインコンテンツ：スクロール対応 */}
+        <div className="flex-1 flex flex-col items-center justify-start overflow-y-auto px-4 pb-16 pt-4">
+          <div className="w-full max-w-5xl">
+            <h1 className="text-4xl font-bold mb-2 tracking-tight text-center">Comic Viewer</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-10 text-center">
+              Drop a ZIP to start reading
+            </p>
+            <div className="flex justify-center">
+              <DropZone onFileSelect={handleFileSelect} loadingState={loadingState} />
+            </div>
+            <DirectoryBrowser
+              zipFiles={fsAccess.zipFiles}
+              isSupported={fsAccess.isSupported}
+              onOpenDirectory={fsAccess.openDirectory}
+              onSelectFile={handleDirFileSelect}
+              thumbnails={fsAccess.thumbnails}
+              thumbnailsLoading={fsAccess.thumbnailsLoading}
+            />
+          </div>
         </div>
       </div>
     );

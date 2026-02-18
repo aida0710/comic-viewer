@@ -1,17 +1,55 @@
 import { useMemo, useState } from 'react';
-import { FileIcon, FolderIcon } from './Icons';
+import { FolderIcon } from './Icons';
 import { naturalSort } from '../utils/naturalSort';
-
-interface ZipFileEntry {
-  name: string;
-  handle: FileSystemFileHandle;
-}
+import type { ZipFileEntry } from '../types';
 
 interface DirectoryBrowserProps {
   zipFiles: ZipFileEntry[];
   isSupported: boolean;
   onOpenDirectory: () => void;
   onSelectFile: (entry: ZipFileEntry) => void;
+  thumbnails: Map<string, string>;
+  thumbnailsLoading: boolean;
+}
+
+interface ThumbnailCardProps {
+  entry: ZipFileEntry;
+  thumbnailUrl: string | undefined;
+  isLoading: boolean;
+  onSelect: (entry: ZipFileEntry) => void;
+}
+
+function ThumbnailCard({ entry, thumbnailUrl, isLoading, onSelect }: ThumbnailCardProps) {
+  return (
+    <button
+      onClick={() => onSelect(entry)}
+      aria-label={`Open ${entry.name}`}
+      className="group flex flex-col rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all duration-150 bg-white dark:bg-gray-900"
+    >
+      {/* サムネイル領域（正方形） */}
+      <div className="relative aspect-square w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+        {isLoading && !thumbnailUrl ? (
+          <div className="absolute inset-0 animate-pulse bg-gray-200 dark:bg-gray-700" />
+        ) : !thumbnailUrl ? (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <FolderIcon width={48} height={48} className="text-gray-300 dark:text-gray-600" />
+          </div>
+        ) : (
+          <img
+            src={thumbnailUrl}
+            alt=""
+            loading="lazy"
+            draggable={false}
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+          />
+        )}
+      </div>
+      {/* ファイル名 */}
+      <div className="px-2 py-1.5">
+        <p className="text-xs text-gray-700 dark:text-gray-300 break-all">{entry.name}</p>
+      </div>
+    </button>
+  );
 }
 
 export function DirectoryBrowser({
@@ -19,6 +57,8 @@ export function DirectoryBrowser({
   isSupported,
   onOpenDirectory,
   onSelectFile,
+  thumbnails,
+  thumbnailsLoading,
 }: DirectoryBrowserProps) {
   const [sortAsc, setSortAsc] = useState(true);
 
@@ -30,7 +70,7 @@ export function DirectoryBrowser({
   if (!isSupported) return null;
 
   return (
-    <div className="mt-6 w-full max-w-lg">
+    <div className="mt-6 w-full">
       {/* 区切り */}
       <div className="flex items-center gap-3 mb-4">
         <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
@@ -70,22 +110,17 @@ export function DirectoryBrowser({
               </svg>
             </button>
           </div>
-          <ul
-            className="space-y-0 max-h-64 overflow-y-auto rounded-xl border border-gray-200 dark:border-gray-700 divide-y divide-gray-100 dark:divide-gray-800"
-            role="list"
-          >
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
             {sortedFiles.map((entry) => (
-              <li key={entry.name}>
-                <button
-                  onClick={() => onSelectFile(entry)}
-                  className="flex items-center gap-2 w-full px-3 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors first:rounded-t-xl last:rounded-b-xl"
-                >
-                  <FileIcon width={16} height={16} className="shrink-0" />
-                  <span className="text-sm break-all">{entry.name}</span>
-                </button>
-              </li>
+              <ThumbnailCard
+                key={entry.name}
+                entry={entry}
+                thumbnailUrl={thumbnails.get(entry.name)}
+                isLoading={thumbnailsLoading}
+                onSelect={onSelectFile}
+              />
             ))}
-          </ul>
+          </div>
         </>
       )}
     </div>

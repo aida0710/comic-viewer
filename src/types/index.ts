@@ -1,3 +1,8 @@
+export interface ZipFileEntry {
+  name: string;
+  handle: FileSystemFileHandle;
+}
+
 export interface ComicPage {
   index: number;
   filename: string;
