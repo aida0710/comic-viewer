@@ -58,31 +58,26 @@ export default function App() {
     isLastSpread,
   });
 
-  // Manual navigation stops auto-play
   const handleNext = useCallback(() => {
-    autoPlay.stop();
     goNext();
-  }, [autoPlay, goNext]);
+  }, [goNext]);
 
   const handlePrev = useCallback(() => {
-    autoPlay.stop();
     goPrev();
-  }, [autoPlay, goPrev]);
+  }, [goPrev]);
 
   const handleGoTo = useCallback(
     (index: number) => {
-      autoPlay.stop();
       goTo(index);
     },
-    [autoPlay, goTo]
+    [goTo]
   );
 
   const handleGoToPage = useCallback(
     (pageIndex: number) => {
-      autoPlay.stop();
       goToPage(pageIndex);
     },
-    [autoPlay, goToPage]
+    [goToPage]
   );
 
   // Click navigation (direction-aware)
