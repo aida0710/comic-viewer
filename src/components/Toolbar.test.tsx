@@ -19,6 +19,8 @@ describe('Toolbar', () => {
     onToggleTheme: vi.fn(),
     isFullscreen: false,
     onToggleFullscreen: vi.fn(),
+    isAutoPlaying: false,
+    onToggleAutoPlay: vi.fn(),
     onToggleSettings: vi.fn(),
     onClose: vi.fn(),
     viewMode: 'dual' as const,

@@ -101,6 +101,7 @@ export default function App() {
   useKeyboardNav({
     onNext: handleNext,
     onPrev: handlePrev,
+    onToggleAutoPlay: autoPlay.toggle,
     readingDirection: settings.readingDirection,
     enabled: isReading && !showSettings && !resumePrompt,
   });
@@ -226,6 +227,8 @@ export default function App() {
         onToggleTheme={toggleTheme}
         isFullscreen={isFullscreen}
         onToggleFullscreen={toggleFullscreen}
+        isAutoPlaying={autoPlay.isPlaying}
+        onToggleAutoPlay={autoPlay.toggle}
         onToggleSettings={() => setShowSettings((v) => !v)}
         onClose={handleClose}
         viewMode={settings.viewMode}

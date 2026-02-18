@@ -4,6 +4,7 @@ import type { ReadingDirection } from '../types';
 interface UseKeyboardNavOptions {
   onNext: () => void;
   onPrev: () => void;
+  onToggleAutoPlay: () => void;
   readingDirection: ReadingDirection;
   enabled?: boolean;
 }
@@ -11,6 +12,7 @@ interface UseKeyboardNavOptions {
 export function useKeyboardNav({
   onNext,
   onPrev,
+  onToggleAutoPlay,
   readingDirection,
   enabled = true,
 }: UseKeyboardNavOptions) {
@@ -38,9 +40,12 @@ export function useKeyboardNav({
           break;
         case 'ArrowDown':
         case 'PageDown':
-        case ' ':
           e.preventDefault();
           onNext();
+          break;
+        case ' ':
+          e.preventDefault();
+          onToggleAutoPlay();
           break;
         case 'ArrowUp':
         case 'PageUp':
@@ -60,5 +65,5 @@ export function useKeyboardNav({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [onNext, onPrev, readingDirection, enabled]);
+  }, [onNext, onPrev, onToggleAutoPlay, readingDirection, enabled]);
 }

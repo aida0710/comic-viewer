@@ -7,7 +7,7 @@ describe('useKeyboardNav', () => {
   it('calls onNext on ArrowRight in LTR mode', () => {
     const onNext = vi.fn();
     const onPrev = vi.fn();
-    renderHook(() => useKeyboardNav({ onNext, onPrev, readingDirection: 'ltr' }));
+    renderHook(() => useKeyboardNav({ onNext, onPrev, onToggleAutoPlay: vi.fn(), readingDirection: 'ltr' }));
 
     fireEvent.keyDown(document, { key: 'ArrowRight' });
     expect(onNext).toHaveBeenCalledOnce();
@@ -17,7 +17,7 @@ describe('useKeyboardNav', () => {
   it('calls onPrev on ArrowRight in RTL mode', () => {
     const onNext = vi.fn();
     const onPrev = vi.fn();
-    renderHook(() => useKeyboardNav({ onNext, onPrev, readingDirection: 'rtl' }));
+    renderHook(() => useKeyboardNav({ onNext, onPrev, onToggleAutoPlay: vi.fn(), readingDirection: 'rtl' }));
 
     fireEvent.keyDown(document, { key: 'ArrowRight' });
     expect(onPrev).toHaveBeenCalledOnce();
@@ -27,24 +27,26 @@ describe('useKeyboardNav', () => {
   it('calls onNext on ArrowLeft in RTL mode', () => {
     const onNext = vi.fn();
     const onPrev = vi.fn();
-    renderHook(() => useKeyboardNav({ onNext, onPrev, readingDirection: 'rtl' }));
+    renderHook(() => useKeyboardNav({ onNext, onPrev, onToggleAutoPlay: vi.fn(), readingDirection: 'rtl' }));
 
     fireEvent.keyDown(document, { key: 'ArrowLeft' });
     expect(onNext).toHaveBeenCalledOnce();
   });
 
-  it('calls onNext on Space', () => {
-    const onNext = vi.fn();
-    renderHook(() => useKeyboardNav({ onNext, onPrev: vi.fn(), readingDirection: 'rtl' }));
+  it('calls onToggleAutoPlay on Space', () => {
+    const onToggleAutoPlay = vi.fn();
+    renderHook(() =>
+      useKeyboardNav({ onNext: vi.fn(), onPrev: vi.fn(), onToggleAutoPlay, readingDirection: 'rtl' })
+    );
 
     fireEvent.keyDown(document, { key: ' ' });
-    expect(onNext).toHaveBeenCalledOnce();
+    expect(onToggleAutoPlay).toHaveBeenCalledOnce();
   });
 
   it('does not fire when disabled', () => {
     const onNext = vi.fn();
     renderHook(() =>
-      useKeyboardNav({ onNext, onPrev: vi.fn(), readingDirection: 'rtl', enabled: false })
+      useKeyboardNav({ onNext, onPrev: vi.fn(), onToggleAutoPlay: vi.fn(), readingDirection: 'rtl', enabled: false })
     );
 
     fireEvent.keyDown(document, { key: 'ArrowLeft' });
@@ -53,7 +55,7 @@ describe('useKeyboardNav', () => {
 
   it('does not fire when typing in input', () => {
     const onNext = vi.fn();
-    renderHook(() => useKeyboardNav({ onNext, onPrev: vi.fn(), readingDirection: 'ltr' }));
+    renderHook(() => useKeyboardNav({ onNext, onPrev: vi.fn(), onToggleAutoPlay: vi.fn(), readingDirection: 'ltr' }));
 
     const input = document.createElement('input');
     document.body.appendChild(input);

@@ -2,7 +2,7 @@ import type { ReadingDirection, Theme, ViewMode } from '../types';
 import { PageNavigator } from './PageNavigator';
 import { ZoomControls } from './ZoomControls';
 import { ThemeToggle } from './ThemeToggle';
-import { MaximizeIcon, MinimizeIcon, SettingsIcon, XIcon } from './Icons';
+import { MaximizeIcon, MinimizeIcon, PauseIcon, PlayIcon, SettingsIcon, XIcon } from './Icons';
 
 interface ToolbarProps {
   // Page navigation
@@ -24,6 +24,9 @@ interface ToolbarProps {
   // Fullscreen
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
+  // Auto-play
+  isAutoPlaying: boolean;
+  onToggleAutoPlay: () => void;
   // Settings
   onToggleSettings: () => void;
   // Close
@@ -48,6 +51,8 @@ export function Toolbar({
   onToggleTheme,
   isFullscreen,
   onToggleFullscreen,
+  isAutoPlaying,
+  onToggleAutoPlay,
   onToggleSettings,
   onClose,
 }: ToolbarProps) {
@@ -85,6 +90,19 @@ export function Toolbar({
               <MinimizeIcon width={18} height={18} />
             ) : (
               <MaximizeIcon width={18} height={18} />
+            )}
+          </button>
+
+          <button
+            onClick={onToggleAutoPlay}
+            className={`p-2 rounded-lg transition-colors ${isAutoPlaying ? 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+            aria-label={isAutoPlaying ? 'Pause auto-play' : 'Start auto-play'}
+            title={isAutoPlaying ? 'Pause (Space)' : 'Auto-play (Space)'}
+          >
+            {isAutoPlaying ? (
+              <PauseIcon width={18} height={18} />
+            ) : (
+              <PlayIcon width={18} height={18} />
             )}
           </button>
 
