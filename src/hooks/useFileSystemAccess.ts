@@ -2,18 +2,30 @@ import { useState, useCallback, useRef } from 'react';
 import { unzip } from 'fflate';
 import type { ZipFileEntry } from '../types';
 import { isImageFile } from '../utils/imageFilter';
-import { naturalSort } from '../utils/naturalSort';
 
 async function extractFirstImageUrl(file: File): Promise<string | null> {
   try {
     const arrayBuffer = await file.arrayBuffer();
     const uint8 = new Uint8Array(arrayBuffer);
+
+    // 最初の画像1枚だけ展開（ZIP全体の展開を回避してメモリ節約）
+    let found = false;
     const files = await new Promise<Record<string, Uint8Array>>((resolve, reject) => {
-      unzip(uint8, (err, data) => { if (err) reject(err); else resolve(data); });
+      unzip(uint8, {
+        filter: (info) => {
+          if (found) return false;
+          if (isImageFile(info.name)) {
+            found = true;
+            return true;
+          }
+          return false;
+        },
+      }, (err, data) => { if (err) reject(err); else resolve(data); });
     });
-    const imageNames = Object.keys(files).filter(isImageFile).sort(naturalSort);
-    if (imageNames.length === 0) return null;
-    const blob = new Blob([files[imageNames[0]] as BlobPart]);
+
+    const imageName = Object.keys(files).find(isImageFile);
+    if (!imageName) return null;
+    const blob = new Blob([files[imageName] as BlobPart]);
     return URL.createObjectURL(blob);
   } catch {
     return null;
@@ -26,6 +38,7 @@ export function useFileSystemAccess() {
   const [thumbnails, setThumbnails] = useState<Map<string, string>>(new Map());
   const [thumbnailsLoading, setThumbnailsLoading] = useState(false);
   const thumbnailUrlsRef = useRef<string[]>([]);
+  const extractionIdRef = useRef(0);
 
   const openDirectory = useCallback(async () => {
     if (!window.showDirectoryPicker) return;
@@ -50,34 +63,28 @@ export function useFileSystemAccess() {
       setThumbnailsLoading(true);
       setThumbnails(new Map());
 
-      const newMap = new Map<string, string>();
-      const newUrls: string[] = [];
+      // 全サムネイルを並列で非同期抽出（awaitしない→UIをブロックしない）
+      const currentId = ++extractionIdRef.current;
 
-      // 4件ずつ並列処理（メモリ・スレッドのバランス）
-      const BATCH = 4;
-      for (let i = 0; i < files.length; i += BATCH) {
-        await Promise.all(
-          files.slice(i, i + BATCH).map(async (entry) => {
-            try {
-              if ((await entry.handle.queryPermission({ mode: 'read' })) !== 'granted') {
-                const r = await entry.handle.requestPermission({ mode: 'read' });
-                if (r !== 'granted') return;
-              }
-              const file = await entry.handle.getFile();
-              const url = await extractFirstImageUrl(file);
-              if (url) {
-                newMap.set(entry.name, url);
-                newUrls.push(url);
-              }
-            } catch { /* URLなしのまま → プレースホルダー表示 */ }
-          })
-        );
-        // バッチ完了ごとに中間結果をフラッシュ（グリッドが段階的に埋まる）
-        setThumbnails(new Map(newMap));
-      }
+      const extractions = files.map(async (entry) => {
+        try {
+          if ((await entry.handle.queryPermission({ mode: 'read' })) !== 'granted') {
+            const r = await entry.handle.requestPermission({ mode: 'read' });
+            if (r !== 'granted') return;
+          }
+          const file = await entry.handle.getFile();
+          const url = await extractFirstImageUrl(file);
+          if (extractionIdRef.current !== currentId) return;
+          if (url) {
+            thumbnailUrlsRef.current.push(url);
+            setThumbnails(prev => new Map(prev).set(entry.name, url));
+          }
+        } catch { /* skip */ }
+      });
 
-      thumbnailUrlsRef.current = newUrls;
-      setThumbnailsLoading(false);
+      Promise.allSettled(extractions).then(() => {
+        if (extractionIdRef.current === currentId) setThumbnailsLoading(false);
+      });
     } catch {
       // User cancelled or permission denied
     }
