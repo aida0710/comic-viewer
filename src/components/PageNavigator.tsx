@@ -60,7 +60,7 @@ export function PageNavigator({
     <div className="flex items-center gap-3 w-full">
       <button
         onClick={() => setShowJump(!showJump)}
-        className="text-sm font-mono whitespace-nowrap px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        className="text-sm font-mono whitespace-nowrap px-3 py-1.5 rounded-xl text-cocoa-600 dark:text-petal-300 hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
         title="Jump to page"
       >
         {pageLabel} / {totalPages}
@@ -72,7 +72,7 @@ export function PageNavigator({
         max={Math.max(0, totalSpreads - 1)}
         value={sliderValue}
         onChange={handleSliderChange}
-        className={cn('flex-1 h-1.5 cursor-pointer accent-blue-500')}
+        className={cn('flex-1 h-1.5 cursor-pointer')}
         aria-label="Page slider"
       />
 
@@ -86,12 +86,12 @@ export function PageNavigator({
             onChange={(e) => setJumpInput(e.target.value)}
             placeholder="Page\u2026"
             aria-label="Jump to page"
-            className="w-16 px-2 py-1 text-sm rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800"
+            className="w-16 px-2 py-1 text-sm font-body rounded-xl border border-blush-200 dark:border-night-700 bg-linen dark:bg-night-800 text-cocoa-900 dark:text-petal-50"
             autoFocus
           />
           <button
             type="submit"
-            className="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-3 py-1 text-sm font-body font-semibold bg-rose-400 text-white rounded-xl hover:bg-rose-500 transition-colors duration-200"
           >
             Go
           </button>

@@ -49,11 +49,11 @@ beforeEach(() => {
 describe('Reading Flow Integration', () => {
   it('renders drop zone initially', () => {
     render(<App />);
-    expect(screen.getByText('Drop a ZIP file here')).toBeInTheDocument();
+    expect(screen.getByText('Drop your comic here')).toBeInTheDocument();
   });
 
   it('shows file select prompt', () => {
     render(<App />);
-    expect(screen.getByText('or click to select')).toBeInTheDocument();
+    expect(screen.getByText('ZIP files supported')).toBeInTheDocument();
   });
 });

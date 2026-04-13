@@ -32,7 +32,7 @@ describe('Toolbar', () => {
     expect(screen.getByLabelText('Zoom in')).toBeInTheDocument();
     expect(screen.getByLabelText('Enter fullscreen')).toBeInTheDocument();
     expect(screen.getByLabelText('Settings')).toBeInTheDocument();
-    expect(screen.getByLabelText('Close')).toBeInTheDocument();
+    expect(screen.getByLabelText('Back to home')).toBeInTheDocument();
   });
 
   it('is always visible in the document', () => {

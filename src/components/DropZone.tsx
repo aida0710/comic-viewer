@@ -61,10 +61,10 @@ export function DropZone({ onFileSelect, loadingState }: DropZoneProps) {
         onDrop={handleDrop}
         onClick={() => !isLoading && inputRef.current?.click()}
         className={cn(
-          'group w-full max-w-lg p-10 border-2 border-dashed rounded-2xl text-center cursor-pointer transition-all duration-200',
+          'group w-full max-w-lg p-12 md:p-16 border-2 border-dashed rounded-3xl text-center cursor-pointer transition-all duration-300 shadow-sm',
           isDragOver
-            ? 'border-blue-500 bg-blue-500/10 scale-[1.02]'
-            : 'border-gray-300 dark:border-gray-600 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-gray-50 dark:hover:bg-gray-900/50',
+            ? 'border-rose-400 bg-rose-100/60 dark:bg-rose-900/40 scale-[1.03]'
+            : 'border-blush-200 dark:border-night-700 hover:border-rose-400 dark:hover:border-rose-400 hover:bg-rose-100/30 dark:hover:bg-rose-900/20 hover:shadow-md hover:shadow-rose-400/10',
           isLoading && 'pointer-events-none opacity-60'
         )}
         role="button"
@@ -78,11 +78,11 @@ export function DropZone({ onFileSelect, loadingState }: DropZoneProps) {
         }}
       >
         <UploadIcon
-          className="mx-auto mb-4 text-gray-400 dark:text-gray-500 transition-transform duration-200 group-hover:-translate-y-1"
-          width={40} height={40}
+          className="mx-auto mb-4 text-blush-300 dark:text-night-700"
+          width={48} height={48}
         />
-        <p className="text-base font-medium mb-1">Drop a ZIP file here</p>
-        <p className="text-xs text-gray-400 dark:text-gray-500">or click to select</p>
+        <p className="text-base font-body font-medium text-cocoa-900 dark:text-petal-50 mb-1">Drop your comic here</p>
+        <p className="text-xs font-body text-cocoa-400 dark:text-petal-500">ZIP files supported</p>
         <input
           ref={inputRef}
           type="file"

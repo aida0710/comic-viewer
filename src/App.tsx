@@ -143,16 +143,28 @@ export default function App() {
       autoPlay.stop();
       setCurrentIndex(0);
       loadZip(file);
+      history.pushState({ reading: true }, '');
     },
     [resetZoom, autoPlay, setCurrentIndex, loadZip]
   );
 
-  // Handle close viewer
+  // Handle close viewer (go back to home)
   const handleClose = useCallback(() => {
     autoPlay.stop();
     resetZoom();
     cleanup();
   }, [autoPlay, resetZoom, cleanup]);
+
+  // Browser back button support
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isReading) {
+        handleClose();
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [isReading, handleClose]);
 
   // Handle directory file select
   const handleDirFileSelect = useCallback(
@@ -166,7 +178,7 @@ export default function App() {
   // File selection / idle state
   if (!isReading) {
     return (
-      <div className="h-full flex flex-col">
+      <div className="h-full flex flex-col bg-gradient-to-b from-cream to-linen dark:from-night-950 dark:to-night-900">
         {/* ヘッダー：右上にテーマトグル */}
         <div className="flex justify-end p-4">
           <ThemeToggle theme={settings.theme} onToggle={toggleTheme} />
@@ -174,11 +186,17 @@ export default function App() {
 
         {/* メインコンテンツ：スクロール対応 */}
         <div className="flex-1 flex flex-col items-center justify-start overflow-y-auto px-4 pb-16 pt-4">
-          <div className="w-full max-w-5xl">
-            <h1 className="text-4xl font-bold mb-2 tracking-tight text-center">Comic Viewer</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-10 text-center">
-              Drop a ZIP to start reading
+          <div className="w-full max-w-4xl">
+            <h1 className="font-display text-3xl md:text-4xl font-semibold mb-2 tracking-tight text-center text-cocoa-900 dark:text-petal-50">
+              Comic Viewer
+            </h1>
+            <p className="text-sm font-body text-cocoa-400 dark:text-petal-500 mb-2 text-center">
+              Your cozy reading corner
             </p>
+            <div className="flex justify-center mb-1">
+              <span className="text-peach-300 text-lg tracking-widest">~ ~ ~</span>
+            </div>
+            <div className="h-8" />
             <div className="flex justify-center">
               <DropZone onFileSelect={handleFileSelect} loadingState={loadingState} />
             </div>

@@ -10,8 +10,8 @@ describe('DropZone', () => {
 
   it('renders drop zone text', () => {
     render(<DropZone {...defaultProps} />);
-    expect(screen.getByText('Drop a ZIP file here')).toBeInTheDocument();
-    expect(screen.getByText('or click to select')).toBeInTheDocument();
+    expect(screen.getByText('Drop your comic here')).toBeInTheDocument();
+    expect(screen.getByText('ZIP files supported')).toBeInTheDocument();
   });
 
   it('handles file drop', () => {

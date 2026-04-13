@@ -2,20 +2,135 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  /* === Fonts === */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+
+  /* === Custom Colors: Light Palette === */
+  --color-cream: #FFF8F3;
+  --color-linen: #FFF1E8;
+
+  --color-blush-100: #FAE8E0;
+  --color-blush-200: #F5D5C8;
+  --color-blush-300: #EEBFB0;
+
+  --color-cocoa-400: #B49A9C;
+  --color-cocoa-600: #7D6264;
+  --color-cocoa-900: #3D2C2E;
+
+  --color-rose-100: #FDE8EC;
+  --color-rose-300: #F7B8C4;
+  --color-rose-400: #F4A0B0;
+  --color-rose-500: #EC8798;
+  --color-rose-900: #3D2030;
+
+  --color-lavender-100: #EDE8F8;
+  --color-lavender-400: #B8A9E8;
+  --color-lavender-900: #2A2540;
+
+  --color-peach-100: #FFF0E0;
+  --color-peach-300: #FFCBA4;
+  --color-peach-400: #FFB87A;
+
+  --color-sage-400: #A8D5BA;
+  --color-coral-400: #F09090;
+
+  /* === Custom Colors: Dark Palette ("Twilight Pastel") === */
+  --color-night-700: #3D3650;
+  --color-night-750: #352F45;
+  --color-night-800: #302A3D;
+  --color-night-900: #252030;
+  --color-night-950: #1A1520;
+
+  --color-petal-50: #F8F0F2;
+  --color-petal-300: #D4BFC5;
+  --color-petal-500: #9A8088;
+
+  /* === Custom Easings === */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* === Custom Animations === */
+  --animate-shimmer: shimmer 2s linear infinite;
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
+
+/* === Global Base Styles === */
 html, body, #root {
   height: 100%;
   margin: 0;
 }
 
 body {
-  @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100;
+  @apply bg-cream text-cocoa-900 font-body dark:bg-night-950 dark:text-petal-50;
   overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+/* === Focus Ring (pastel-themed) === */
 button:focus-visible,
 [role="button"]:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid #3b82f6;
+  outline: 2px solid #F4A0B0;
   outline-offset: 2px;
+}
+
+/* === Custom Range Slider === */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  background: #F5D5C8;
+  outline: none;
+}
+.dark input[type="range"] {
+  background: #3D3650;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F4A0B0;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(244, 160, 176, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 3px 10px rgba(244, 160, 176, 0.5);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #F4A0B0;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 6px rgba(244, 160, 176, 0.4);
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #F5D5C8;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb { background: #3D3650; }
+
+/* === Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

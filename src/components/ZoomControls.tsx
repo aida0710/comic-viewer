@@ -12,7 +12,7 @@ export function ZoomControls({ isZoomed, onZoomIn, onZoomOut, onResetZoom }: Zoo
     <div className="flex items-center gap-1">
       <button
         onClick={onZoomOut}
-        className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        className="p-2 rounded-xl hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
         aria-label="Zoom out"
         title="Zoom out"
       >
@@ -20,7 +20,7 @@ export function ZoomControls({ isZoomed, onZoomIn, onZoomOut, onResetZoom }: Zoo
       </button>
       <button
         onClick={onZoomIn}
-        className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        className="p-2 rounded-xl hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
         aria-label="Zoom in"
         title="Zoom in"
       >
@@ -29,7 +29,7 @@ export function ZoomControls({ isZoomed, onZoomIn, onZoomOut, onResetZoom }: Zoo
       {isZoomed && (
         <button
           onClick={onResetZoom}
-          className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          className="p-2 rounded-xl hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
           aria-label="Reset zoom"
           title="Reset zoom"
         >

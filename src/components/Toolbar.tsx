@@ -2,7 +2,7 @@ import type { ReadingDirection, Theme, ViewMode } from '../types';
 import { PageNavigator } from './PageNavigator';
 import { ZoomControls } from './ZoomControls';
 import { ThemeToggle } from './ThemeToggle';
-import { MaximizeIcon, MinimizeIcon, PauseIcon, PlayIcon, SettingsIcon, XIcon } from './Icons';
+import { ChevronLeftIcon, MaximizeIcon, MinimizeIcon, PauseIcon, PlayIcon, SettingsIcon } from './Icons';
 
 interface ToolbarProps {
   // Page navigation
@@ -58,21 +58,32 @@ export function Toolbar({
 }: ToolbarProps) {
   return (
     <div
-      className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 px-4 py-2 z-50"
+      className="bg-linen/85 dark:bg-night-900/85 backdrop-blur-xl border-t border-blush-200/50 dark:border-night-700/50 px-4 py-2 z-50 rounded-t-2xl shadow-[0_-4px_20px_rgba(61,44,46,0.06)] dark:shadow-[0_-4px_20px_rgba(0,0,0,0.3)]"
       data-testid="toolbar"
     >
       <div className="flex items-center gap-3">
-        <PageNavigator
-          currentIndex={currentIndex}
-          totalSpreads={totalSpreads}
-          totalPages={totalPages}
-          currentPageNumbers={currentPageNumbers}
-          readingDirection={readingDirection}
-          onGoTo={onGoTo}
-          onGoToPage={onGoToPage}
-        />
+        <button
+          onClick={onClose}
+          className="p-2 rounded-xl hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
+          aria-label="Back to home"
+          title="Back to home"
+        >
+          <ChevronLeftIcon width={18} height={18} />
+        </button>
 
-        <div className="flex items-center gap-1 border-l border-gray-200 dark:border-gray-700 pl-3">
+        <div className="border-l border-blush-200/50 dark:border-night-700/50 pl-3 flex-1">
+          <PageNavigator
+            currentIndex={currentIndex}
+            totalSpreads={totalSpreads}
+            totalPages={totalPages}
+            currentPageNumbers={currentPageNumbers}
+            readingDirection={readingDirection}
+            onGoTo={onGoTo}
+            onGoToPage={onGoToPage}
+          />
+        </div>
+
+        <div className="flex items-center gap-2 border-l border-blush-200/50 dark:border-night-700/50 pl-3">
           <ZoomControls
             isZoomed={isZoomed}
             onZoomIn={onZoomIn}
@@ -82,7 +93,7 @@ export function Toolbar({
 
           <button
             onClick={onToggleFullscreen}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-xl hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
             aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
             title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
           >
@@ -95,7 +106,7 @@ export function Toolbar({
 
           <button
             onClick={onToggleAutoPlay}
-            className={`p-2 rounded-lg transition-colors ${isAutoPlaying ? 'text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+            className={`p-2 rounded-xl transition-colors duration-200 ${isAutoPlaying ? 'text-rose-400 hover:bg-rose-100/60 dark:hover:bg-rose-900/40' : 'hover:bg-rose-100/60 dark:hover:bg-rose-900/40'}`}
             aria-label={isAutoPlaying ? 'Pause auto-play' : 'Start auto-play'}
             title={isAutoPlaying ? 'Pause (Space)' : 'Auto-play (Space)'}
           >
@@ -110,20 +121,11 @@ export function Toolbar({
 
           <button
             onClick={onToggleSettings}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+            className="p-2 rounded-xl hover:bg-rose-100/60 dark:hover:bg-rose-900/40 transition-colors duration-200"
             aria-label="Settings"
             title="Settings"
           >
             <SettingsIcon width={18} height={18} />
-          </button>
-
-          <button
-            onClick={onClose}
-            className="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-            aria-label="Close"
-            title="Close"
-          >
-            <XIcon width={18} height={18} />
           </button>
         </div>
       </div>

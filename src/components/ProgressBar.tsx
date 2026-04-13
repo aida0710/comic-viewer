@@ -20,15 +20,15 @@ export function ProgressBar({ loadingState }: ProgressBarProps) {
   return (
     <div className="w-full max-w-md mx-auto p-4" role="status" aria-live="polite">
       {fileName && (
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 truncate">{fileName}</p>
+        <p className="text-sm font-body text-cocoa-600 dark:text-petal-300 mb-2 truncate">{fileName}</p>
       )}
       {status === 'error' ? (
-        <p className="text-sm text-red-500">{error ?? 'Unknown error'}</p>
+        <p className="text-sm font-body text-coral-400">{error ?? 'Unknown error'}</p>
       ) : (
         <>
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="w-full bg-blush-100 dark:bg-night-800 rounded-full h-2.5">
             <div
-              className="bg-blue-500 h-2 rounded-full transition-[width] duration-200"
+              className="bg-gradient-to-r from-peach-300 to-rose-400 h-2.5 rounded-full transition-[width] duration-500 ease-[var(--ease-soft)]"
               style={{ width: `${progress}%` }}
               role="progressbar"
               aria-valuenow={progress}
@@ -36,7 +36,7 @@ export function ProgressBar({ loadingState }: ProgressBarProps) {
               aria-valuemax={100}
             />
           </div>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm font-body text-cocoa-600 dark:text-petal-300 mt-1">
             {STATUS_LABELS[status]} {progress}%
           </p>
         </>

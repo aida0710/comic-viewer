@@ -19,20 +19,20 @@ interface ThumbnailCardProps {
   onSelect: (entry: ZipFileEntry) => void;
 }
 
-function ThumbnailCard({ entry, thumbnailUrl, isLoading, onSelect }: ThumbnailCardProps) {
+function ThumbnailCard({ entry, thumbnailUrl, isLoading, onSelect }: ThumbnailCardProps & { index?: number }) {
   return (
     <button
       onClick={() => onSelect(entry)}
       aria-label={`Open ${entry.name}`}
-      className="group flex flex-col rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition-all duration-150 bg-white dark:bg-gray-900"
+      className="group flex flex-col rounded-2xl overflow-hidden border border-blush-200 dark:border-night-700 hover:border-rose-300 dark:hover:border-lavender-400 hover:shadow-lg hover:shadow-rose-400/10 hover:-translate-y-1 transition-all duration-300 bg-linen dark:bg-night-900 shadow-sm shadow-rose-400/5"
     >
       {/* サムネイル領域（正方形） */}
-      <div className="relative aspect-square w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
+      <div className="relative aspect-square w-full overflow-hidden bg-blush-100 dark:bg-night-800">
         {isLoading && !thumbnailUrl ? (
-          <div className="absolute inset-0 animate-pulse bg-gray-200 dark:bg-gray-700" />
+          <div className="absolute inset-0 bg-gradient-to-r from-blush-100 via-linen to-blush-100 dark:from-night-800 dark:via-night-900 dark:to-night-800 animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
         ) : !thumbnailUrl ? (
           <div className="absolute inset-0 flex items-center justify-center">
-            <FolderIcon width={48} height={48} className="text-gray-300 dark:text-gray-600" />
+            <FolderIcon width={48} height={48} className="text-blush-200 dark:text-night-700" />
           </div>
         ) : (
           <img
@@ -40,13 +40,13 @@ function ThumbnailCard({ entry, thumbnailUrl, isLoading, onSelect }: ThumbnailCa
             alt=""
             loading="lazy"
             draggable={false}
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         )}
       </div>
       {/* ファイル名 */}
-      <div className="px-2 py-1.5">
-        <p className="text-xs text-gray-700 dark:text-gray-300 break-all">{entry.name}</p>
+      <div className="px-3 py-2">
+        <p className="text-xs font-body text-cocoa-600 dark:text-petal-300 break-all">{entry.name}</p>
       </div>
     </button>
   );
@@ -73,17 +73,17 @@ export function DirectoryBrowser({
     <div className="mt-6 w-full">
       {/* 区切り */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
-        <span className="text-xs text-gray-400 dark:text-gray-500">or</span>
-        <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700" />
+        <div className="flex-1 h-px bg-blush-200 dark:bg-night-700" />
+        <span className="text-xs font-body text-cocoa-400 dark:text-petal-500">or</span>
+        <div className="flex-1 h-px bg-blush-200 dark:bg-night-700" />
       </div>
 
       <button
         onClick={onOpenDirectory}
-        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+        className="flex items-center justify-center gap-2 w-full px-4 py-2.5 rounded-2xl border border-blush-200 dark:border-night-700 hover:bg-rose-100/40 dark:hover:bg-rose-900/20 hover:border-rose-300 dark:hover:border-rose-400 transition-all duration-300"
       >
-        <FolderIcon width={18} height={18} />
-        <span className="text-sm">Open Folder</span>
+        <FolderIcon width={18} height={18} className="text-peach-300" />
+        <span className="text-sm font-body text-cocoa-900 dark:text-petal-50">Open Folder</span>
       </button>
 
       {sortedFiles.length > 0 && (
@@ -91,7 +91,7 @@ export function DirectoryBrowser({
           <div className="mt-3 flex justify-end">
             <button
               onClick={() => setSortAsc((v) => !v)}
-              className="flex items-center gap-1 px-2 py-1 text-xs text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="flex items-center gap-1 px-2 py-1 text-xs font-body text-cocoa-400 dark:text-petal-500 hover:text-rose-400 transition-colors"
               aria-label={sortAsc ? 'Sort descending' : 'Sort ascending'}
             >
               Name
@@ -110,7 +110,7 @@ export function DirectoryBrowser({
               </svg>
             </button>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {sortedFiles.map((entry) => (
               <ThumbnailCard
                 key={entry.name}

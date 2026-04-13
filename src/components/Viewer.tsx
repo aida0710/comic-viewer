@@ -45,7 +45,7 @@ export function Viewer({
 
   if (!spread) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-500">
+      <div className="flex items-center justify-center h-full text-cocoa-400 dark:text-petal-500 font-body">
         No pages to display
       </div>
     );
@@ -78,7 +78,7 @@ export function Viewer({
             alt={(spread.left ?? spread.right)!.filename}
             width={(spread.left ?? spread.right)!.width}
             height={(spread.left ?? spread.right)!.height}
-            className="max-h-full max-w-full object-contain"
+            className="max-h-full max-w-full object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.3)]"
             draggable={false}
           />
         ) : (
